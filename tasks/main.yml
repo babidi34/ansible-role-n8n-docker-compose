@@ -1,10 +1,10 @@
 ---
 
 - name: Create /opt/n8n_docker-compose directory
-      file:
-        path: {{ n8n_directory }}
-        state: directory
-        mode: "0750"
+  file:
+    path: "{{ n8n_directory }}"
+    state: directory
+    mode: "0750"
 
 - name: Copy Dockerfile.n8n_debian
   copy:
@@ -41,5 +41,28 @@
 
 - name: Start n8n containers
   command: docker-compose up -d
+  args:
+    chdir: {{ n8n_directory }}
+
+- name: Copy backup SQL file
+  copy:
+    src: backup.sql
+    dest: "{{ n8n_directory }}/backup.sql"
+  when: backup_sql is defined
+
+- name: Copy backup import sql
+  copy:
+    src: import_db_pg.sh
+    dest: "{{ n8n_directory }}/import_db_pg.sh"
+  when: backup_sql is defined
+
+- name: Copy backup export sql
+  copy:
+    src: import_db_pg.sh
+    dest: "{{ n8n_directory }}/export_db_pg.sh"
+  when: backup_sql is defined
+
+- name: execute import_db_pg.sh
+  command: ./import_db_pg.sh
   args:
     chdir: {{ n8n_directory }}
