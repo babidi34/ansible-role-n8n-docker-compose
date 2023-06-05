@@ -1,0 +1,45 @@
+---
+
+- name: Create /opt/n8n_docker-compose directory
+      file:
+        path: {{ n8n_directory }}
+        state: directory
+        mode: "0750"
+
+- name: Copy Dockerfile.n8n_debian
+  copy:
+    src: Dockerfile.n8n_debian
+    dest: {{ n8n_directory }}/{{n8n_dockerfile_name}}
+
+- name: Copy docker-compose.yml
+  copy:
+    src: docker-compose.yml
+    dest: {{ n8n_directory }}/docker-compose.yml
+
+- name: Create .env file
+  copy:
+    content: |
+      N8N_BASIC_AUTH_ACTIVE={{N8N_BASIC_AUTH_ACTIVE}}
+      N8N_BASIC_AUTH_USER={{N8N_BASIC_AUTH_USER}}
+      N8N_BASIC_AUTH_PASSWORD={{N8N_BASIC_AUTH_PASSWORD}}
+      N8N_PROTOCOL={{N8N_PROTOCOL}}
+      N8N_PORT={{N8N_PORT}}
+      DB_TYPE={{DB_TYPE}}
+      DB_POSTGRESDB_HOST={{DB_POSTGRESDB_HOST}}
+      DB_POSTGRESDB_DATABASE={{DB_POSTGRESDB_DATABASE: n8n}}
+      DB_POSTGRESDB_USER={{DB_POSTGRESDB_USER}}
+      DB_POSTGRESDB_PASSWORD={{DB_POSTGRESDB_PASSWORD}}
+      POSTGRES_USER={{POSTGRES_USER}}
+      POSTGRES_PASSWORD={{POSTGRES_PASSWORD}}
+      POSTGRES_DB={{POSTGRES_DB}}
+    dest: {{ n8n_directory }}/.env
+
+- name: Build n8n image
+  command: docker build -f {{n8n_dockerfile_name}} -t {{n8n_docker_image}} .
+  args:
+    chdir: {{ n8n_directory }}
+
+- name: Start n8n containers
+  command: docker-compose up -d
+  args:
+    chdir: {{ n8n_directory }}
