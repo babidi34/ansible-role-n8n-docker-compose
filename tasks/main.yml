@@ -8,7 +8,6 @@
   with_items:
     - docker
     - docker-ce-cli
-    - docker.io
     - docker-compose
 
 
@@ -75,6 +74,6 @@
   when: backup_sql is defined
 
 - name: execute import_db_pg.sh
-  command: "./import_db_pg.sh backup_sql"
+  command: "./import_db_pg.sh backup.sql"
   args:
     chdir: "{{ n8n_directory }}"
