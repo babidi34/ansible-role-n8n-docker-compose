@@ -32,7 +32,7 @@
       POSTGRES_USER={{POSTGRES_USER}}
       POSTGRES_PASSWORD={{POSTGRES_PASSWORD}}
       POSTGRES_DB={{POSTGRES_DB}}
-    dest: {{ n8n_directory }}/.env
+    dest: "{{ n8n_directory }}/.env"
 
 - name: Build n8n image
   command: docker build -f {{n8n_dockerfile_name}} -t {{n8n_docker_image}} .
