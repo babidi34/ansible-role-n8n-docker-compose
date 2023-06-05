@@ -14,7 +14,7 @@
 - name: Copy docker-compose.yml
   copy:
     src: docker-compose.yml
-    dest: {{ n8n_directory }}/docker-compose.yml
+    dest: "{{ n8n_directory }}/docker-compose.yml"
 
 - name: Create .env file
   copy:
