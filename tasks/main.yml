@@ -9,7 +9,7 @@
 - name: Copy Dockerfile.n8n_debian
   copy:
     src: Dockerfile.n8n_debian
-    dest: {{ n8n_directory }}/{{n8n_dockerfile_name}}
+    dest: "{{ n8n_directory }}/{{n8n_dockerfile_name}}"
 
 - name: Copy docker-compose.yml
   copy:
@@ -37,12 +37,12 @@
 - name: Build n8n image
   command: docker build -f {{n8n_dockerfile_name}} -t {{n8n_docker_image}} .
   args:
-    chdir: {{ n8n_directory }}
+    chdir: "{{ n8n_directory }}"
 
 - name: Start n8n containers
   command: docker-compose up -d
   args:
-    chdir: {{ n8n_directory }}
+    chdir: "{{ n8n_directory }}"
 
 - name: Copy backup SQL file
   copy:
@@ -65,4 +65,4 @@
 - name: execute import_db_pg.sh
   command: ./import_db_pg.sh
   args:
-    chdir: {{ n8n_directory }}
+    chdir: "{{ n8n_directory }}"
