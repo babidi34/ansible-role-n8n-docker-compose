@@ -58,8 +58,8 @@
 
 - name: Copy backup SQL file
   copy:
-    src: "{{ playbook_dir }}/backup.sql"
-    dest: "{{ n8n_directory }}/backup.sql"
+    src: "{{ playbook_dir }}/{{backup_sql}}"
+    dest: "{{ n8n_directory }}/{{backup_sql}}"
   when: backup_sql is defined
 
 - name: Copy backup import sql
@@ -75,6 +75,6 @@
   when: backup_sql is defined
 
 - name: execute import_db_pg.sh
-  command: ./import_db_pg.sh
+  command: "./import_db_pg.sh {{backup_sql}}"
   args:
     chdir: "{{ n8n_directory }}"
