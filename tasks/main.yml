@@ -8,12 +8,12 @@
 
 - name: Copy Dockerfile.n8n_debian
   copy:
-    src: Dockerfile.n8n_debian
+    src: "{{ playbook_dir }}/Dockerfile.n8n_debian"
     dest: "{{ n8n_directory }}/{{n8n_dockerfile_name}}"
 
 - name: Copy docker-compose.yml
   copy:
-    src: docker-compose.yml
+    src: "{{ playbook_dir }}/docker-compose.yml"
     dest: "{{ n8n_directory }}/docker-compose.yml"
 
 - name: Create .env file
@@ -46,19 +46,19 @@
 
 - name: Copy backup SQL file
   copy:
-    src: backup.sql
+    src: "{{ playbook_dir }}/backup.sql"
     dest: "{{ n8n_directory }}/backup.sql"
   when: backup_sql is defined
 
 - name: Copy backup import sql
   copy:
-    src: import_db_pg.sh
+    src: "{{ playbook_dir }}/import_db_pg.sh"
     dest: "{{ n8n_directory }}/import_db_pg.sh"
   when: backup_sql is defined
 
 - name: Copy backup export sql
   copy:
-    src: import_db_pg.sh
+    src: "{{ playbook_dir }}/import_db_pg.sh"
     dest: "{{ n8n_directory }}/export_db_pg.sh"
   when: backup_sql is defined
 
