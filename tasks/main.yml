@@ -24,6 +24,8 @@
       N8N_BASIC_AUTH_PASSWORD={{N8N_BASIC_AUTH_PASSWORD}}
       N8N_PROTOCOL={{N8N_PROTOCOL}}
       N8N_PORT={{N8N_PORT}}
+      N8N_HOST={{N8N_HOST}}
+      WEBHOOK_TUNNEL_URL={{WEBHOOK_TUNNEL_URL}}
       DB_TYPE={{DB_TYPE}}
       DB_POSTGRESDB_HOST={{DB_POSTGRESDB_HOST}}
       DB_POSTGRESDB_DATABASE={{DB_POSTGRESDB_DATABASE}}
@@ -33,6 +35,7 @@
       POSTGRES_PASSWORD={{POSTGRES_PASSWORD}}
       POSTGRES_DB={{POSTGRES_DB}}
     dest: "{{ n8n_directory }}/.env"
+    force: yes
 
 - name: Build n8n image
   command: docker build -f {{n8n_dockerfile_name}} -t {{n8n_docker_image}} .
