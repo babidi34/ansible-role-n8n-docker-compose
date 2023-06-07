@@ -54,15 +54,22 @@
   copy:
     src: "{{ playbook_dir }}/import_db_pg.sh"
     dest: "{{ n8n_directory }}/import_db_pg.sh"
-  when: backup_sql is defined
 
 - name: Copy backup export sql
   copy:
     src: "{{ playbook_dir }}/import_db_pg.sh"
     dest: "{{ n8n_directory }}/export_db_pg.sh"
-  when: backup_sql is defined
+
+- name: Make the scripts executable
+  file:
+    path: 
+      - "{{ n8n_directory }}/export_db_pg.sh"
+      - "{{ n8n_directory }}/import_db_pg.sh"
+    mode: u+x
+
 
 - name: execute import_db_pg.sh
   command: "./import_db_pg.sh backup.sql"
   args:
     chdir: "{{ n8n_directory }}"
+  when: backup_sql is defined
