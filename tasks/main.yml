@@ -64,9 +64,9 @@
   file:
     path: "{{ item }}"
     mode: u+x
-    loop:
-      - "{{ n8n_directory }}/export_db_pg.sh"
-      - "{{ n8n_directory }}/import_db_pg.sh"
+  loop:
+    - "{{ n8n_directory }}/export_db_pg.sh"
+    - "{{ n8n_directory }}/import_db_pg.sh"
 
 
 - name: execute import_db_pg.sh
