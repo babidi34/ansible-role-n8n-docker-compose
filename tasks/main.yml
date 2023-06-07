@@ -1,16 +1,5 @@
 ---
 
-- name: Install docker and docker-compose
-  package:
-    name: "{{ item }}"
-    state: present
-  become: true
-  with_items:
-    - docker
-    - docker-ce-cli
-    - docker-compose
-
-
 - name: Create /opt/n8n_docker-compose directory
   file:
     path: "{{ n8n_directory }}"
