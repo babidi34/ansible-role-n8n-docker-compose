@@ -6,14 +6,14 @@
     state: directory
     mode: "0750"
 
-- name: Copy Dockerfile.n8n_debian
-  copy:
-    src: "{{ playbook_dir }}/Dockerfile.n8n_debian"
+- name: Copy Dockerfile
+  template:
+    src: "{{ dockerfile_custom_template | default('Dockerfile_n8n_debian.j2') }}"
     dest: "{{ n8n_directory }}/{{n8n_dockerfile_name}}"
 
 - name: Copy docker-compose.yml
-  copy:
-    src: "{{ playbook_dir }}/docker-compose.yml"
+  template:
+    src: "{{ docker_compose_custom_template | default('docker-compose.j2') }}"
     dest: "{{ n8n_directory }}/docker-compose.yml"
 
 - name: Create .env file
@@ -43,24 +43,24 @@
     chdir: "{{ n8n_directory }}"
 
 - name: Start n8n containers
-  command: docker-compose up -d
-  args:
-    chdir: "{{ n8n_directory }}"
+  docker_compose:
+    project_src: "{{ n8n_directory }}"
+
 
 - name: Copy backup SQL file
   copy:
-    src: "{{ playbook_dir }}/{{backup_sql}}"
+    src: "{{backup_sql}}"
     dest: "{{ n8n_directory }}/backup.sql"
   when: backup_sql is defined
 
 - name: Copy backup import sql
   copy:
-    src: "{{ playbook_dir }}/import_db_pg.sh"
+    src: "import_db_pg.sh"
     dest: "{{ n8n_directory }}/import_db_pg.sh"
 
 - name: Copy backup export sql
   copy:
-    src: "{{ playbook_dir }}/import_db_pg.sh"
+    src: "import_db_pg.sh"
     dest: "{{ n8n_directory }}/export_db_pg.sh"
 
 - name: Make the scripts executable

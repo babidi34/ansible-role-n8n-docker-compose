@@ -5,8 +5,8 @@ n8n_directory: /opt/n8n_docker-compose
 n8n_dockerfile_name: Dockerfile.n8n_debian
 n8n_docker_image: n8n-debian-image
 N8N_BASIC_AUTH_ACTIVE: true
-N8N_BASIC_AUTH_USER: user
-N8N_BASIC_AUTH_PASSWORD: password
+N8N_BASIC_AUTH_USER: user_test
+N8N_BASIC_AUTH_PASSWORD: password_1234*
 N8N_PROTOCOL: https
 N8N_PORT: 443
 DB_TYPE: postgresdb
@@ -17,3 +17,4 @@ DB_POSTGRESDB_PASSWORD: pass
 POSTGRES_USER: n8n
 POSTGRES_PASSWORD: pass
 POSTGRES_DB: n8n
+#backup_sql: path_to_backup_on_localhost
