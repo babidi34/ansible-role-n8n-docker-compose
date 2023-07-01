@@ -60,7 +60,7 @@
 
 - name: Copy backup export sql
   copy:
-    src: "import_db_pg.sh"
+    src: "export_db_pg.sh"
     dest: "{{ n8n_directory }}/export_db_pg.sh"
 
 - name: Make the scripts executable
