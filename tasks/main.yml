@@ -17,25 +17,11 @@
     dest: "{{ n8n_directory }}/docker-compose.yml"
 
 - name: Create .env file
-  copy:
-    content: |
-      N8N_BASIC_AUTH_ACTIVE={{ N8N_BASIC_AUTH_ACTIVE }}
-      N8N_BASIC_AUTH_USER={{ N8N_BASIC_AUTH_USER }}
-      N8N_BASIC_AUTH_PASSWORD={{ N8N_BASIC_AUTH_PASSWORD }}
-      N8N_PROTOCOL={{ N8N_PROTOCOL }}
-      N8N_PORT={{ N8N_PORT }}
-      N8N_HOST={{ N8N_HOST }}
-      WEBHOOK_TUNNEL_URL={{ WEBHOOK_TUNNEL_URL }}
-      DB_TYPE={{ DB_TYPE }}
-      DB_POSTGRESDB_HOST={{ DB_POSTGRESDB_HOST }}
-      DB_POSTGRESDB_DATABASE={{ DB_POSTGRESDB_DATABASE }}
-      DB_POSTGRESDB_USER={{ DB_POSTGRESDB_USER }}
-      DB_POSTGRESDB_PASSWORD={{ DB_POSTGRESDB_PASSWORD }}
-      POSTGRES_USER={{ POSTGRES_USER }}
-      POSTGRES_PASSWORD={{ POSTGRES_PASSWORD }}
-      POSTGRES_DB={{ POSTGRES_DB }}
-    dest: "{{ n8n_directory }}/.env"
-    force: yes
+  lineinfile:
+    path: "{{ n8n_directory }}/.env"
+    line: "{{ item.key }}={{ item.value }}"
+    insertafter: EOF
+  with_dict: "{{ env_vars_n8n }}"
 
 - name: Build n8n image
   command: docker build -f {{n8n_dockerfile_name}} -t {{n8n_docker_image}} .
@@ -70,7 +56,6 @@
   loop:
     - "{{ n8n_directory }}/export_db_pg.sh"
     - "{{ n8n_directory }}/import_db_pg.sh"
-
 
 - name: execute import_db_pg.sh
   command: "./import_db_pg.sh backup.sql"
